@@ -18,19 +18,18 @@ public class BookController {
     }
     @PostMapping
     public Book addBook(@RequestBody Book book){
-        bookService.addBook(book);
         return bookService.addBook(book);
     }
     @GetMapping("/{id}")
-    public Book getBook(@PathVariable int id){
+    public Book getBook(@PathVariable long id){
         return bookService.getBookById(id);
     }
     @PutMapping("/{id}")
-    public Book ubdateBook(@PathVariable int id, @RequestBody Book book){
+    public Book updateBook(@PathVariable long id, @RequestBody Book book){
         return bookService.updateBook(id, book);
     }
     @DeleteMapping("/{id}")
-    public void deleteBook(@PathVariable int id){
+    public void deleteBook(@PathVariable long id){
         bookService.deleteBook(id);
     }
 }

@@ -9,22 +9,21 @@ import jakarta.persistence.Id;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private String title;
     private double price;
 
     public Book(){}
 
-    public Book(int id, String title, double price) {
-        this.id = id;
+    public Book(String title, double price) {
         this.title = title;
         this.price = price;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
     public String getTitle() {
