@@ -5,16 +5,19 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 
 @Entity
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @NotBlank(message="Title can not be empty")
     private String title;
+    @Positive(message="Price must be positive")
     private double price;
-
 
     @ManyToOne
     @JoinColumn(name = "author_id")
@@ -27,9 +30,6 @@ public class Book {
         this.title = title;
         this.price = price;
     }
-
-
-
     // getter and setter
     public long getId() {
         return id;

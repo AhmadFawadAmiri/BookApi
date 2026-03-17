@@ -1,5 +1,6 @@
 package com.example.bookapi;
 
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,12 +21,12 @@ public class AuthorController {
     }
 
     @PostMapping
-    public Author addAuthor(@RequestBody Author author){
+    public Author addAuthor(@RequestBody @Valid Author author){
         return authorService.addAuthor(author);
     }
 
     @PostMapping("/{id}/books")
-    public Book addBookToAuthor(@PathVariable long id, @RequestBody Book book){
+    public Book addBookToAuthor(@PathVariable long id, @RequestBody @Valid Book book){
     return authorService.addBookToAuthor(id, book);
     }
     @GetMapping("/{id}")
