@@ -8,14 +8,22 @@ import java.util.List;
 @Service
 public class BookService {
     private final BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
 
-    public BookService(BookRepository bookRepository){
+    public BookService(BookRepository bookRepository, AuthorRepository authorRepository){
         this.bookRepository = bookRepository;
+        this.authorRepository = authorRepository;
     }
     public List<Book> getAllBooks(){
         return bookRepository.findAll();
     }
-    public Book addBook(Book book){
+    public Book addBook(BookDTO dto){
+        Author author = authorRepository.findById(dto.getAuthorId())
+                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_EXTENDED, "Author not found"));
+        Book book = new Book();
+        book.setTitle(dto.getTitle());
+        book.setPrice(dto.getPrice());
+        book.setAuthor(author);
         return bookRepository.save(book);
     }
     public Book getBookById(long id){

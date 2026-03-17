@@ -18,8 +18,10 @@ public class BookController {
         return bookService.getAllBooks();
     }
     @PostMapping
-    public Book addBook(@RequestBody @Valid Book book){
-        return bookService.addBook(book);
+    public Book addBook(@RequestBody @Valid BookDTO bookDTO){
+         return bookService.addBook(bookDTO);
+//        Book book = new Book(bookDTO.getTitle(), bookDTO.getPrice());
+//        return bookService.addBook(book, bookDTO.getAuthorId());
     }
     @GetMapping("/{id}")
     public Book getBook(@PathVariable long id){
