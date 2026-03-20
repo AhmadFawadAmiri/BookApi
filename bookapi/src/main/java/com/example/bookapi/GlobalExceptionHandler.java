@@ -18,10 +18,11 @@ public class GlobalExceptionHandler {
         Map<String, Object> errors = new HashMap<>();
 
         errors.put("status", HttpStatus.BAD_REQUEST.value());
-        errors.put("error", ex.getBindingResult()
+        errors.put("errors", ex.getBindingResult()
                 .getFieldErrors().stream()
                 .map(error->error.getDefaultMessage())
                 .collect(Collectors.toList()));
+        errors.put("timestamp", java.time.LocalDateTime.now());
 
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
 
