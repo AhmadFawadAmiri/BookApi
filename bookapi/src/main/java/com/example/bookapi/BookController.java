@@ -10,12 +10,19 @@ import java.util.List;
 public class BookController {
     private final BookService bookService;
 
+    public List<BookDTO> searchBooks(@RequestParam(required = false) String title, @RequestParam(required = false) String authorName,
+                                     @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size){
+
+        return bookService.searchBooks(title, authorName, page, size);
+    }
+
     public BookController(BookService bookService){
         this.bookService = bookService;
     }
     @GetMapping("/paged")
-    public List<BookDTO> getBooksPaged(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size){
-        return bookService.getBooksPaged(page, size);
+    public List<BookDTO> getBooksPaged(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size,
+                                       String sortBy, String sortDir){
+        return bookService.getBooksPaged(page, size, sortBy, sortDir);
     }
     @PostMapping
     public Book addBook(@RequestBody @Valid BookDTO bookDTO){

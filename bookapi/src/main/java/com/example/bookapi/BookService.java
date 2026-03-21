@@ -2,6 +2,7 @@ package com.example.bookapi;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,11 +19,33 @@ public class BookService {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
     }
-    public List<BookDTO> getBooksPaged(int page, int size){
+
+    public List<BookDTO> searchBooks(String title, String authorName, int page, int size){
         Pageable pageable = PageRequest.of(page, size);
+        Page<Book> bookPage;
+        if(title != null && !title.isEmpty()){
+            bookPage = bookRepository.findByTitleContainingIgnoreCase(title, pageable);
+        }else if(authorName != null && !authorName.isEmpty()){
+            bookPage = bookRepository.findByAuthorNameContainingIgnoreCase(authorName, pageable);
+        }else{
+            bookPage = bookRepository.findAll(pageable);
+        }
+        return bookPage.stream()
+                .map(book -> new BookDTO( book.getId(), book.getTitle(), book.getPrice(), book.getAuthor()
+                        .getId())).collect(Collectors.toList());
+    }
+    public List<BookDTO> getBooksPaged(int page, int size, String sortBy, String sortDir){
+        Sort sort = sortDir.equalsIgnoreCase("asc") ?
+                Sort.by(sortBy).ascending() :
+                Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<Book> bookPage = bookRepository.findAll(pageable);
         return bookPage.stream()
-                   .map(book -> new BookDTO(book.getId(),book.getTitle(),book.getPrice(), book.getAuthor().getId()))
+                   .map(book -> new BookDTO(
+                           book.getId(),book.getTitle(),
+                           book.getPrice(),
+                           book.getAuthor().getId()))
                    .collect(Collectors.toList());
 
     }
