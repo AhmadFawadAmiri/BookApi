@@ -13,9 +13,9 @@ public class BookController {
     public BookController(BookService bookService){
         this.bookService = bookService;
     }
-    @GetMapping
-    public List<Book> getBooks(){
-        return bookService.getAllBooks();
+    @GetMapping("/paged")
+    public List<BookDTO> getBooksPaged(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size){
+        return bookService.getBooksPaged(page, size);
     }
     @PostMapping
     public Book addBook(@RequestBody @Valid BookDTO bookDTO){
@@ -28,8 +28,8 @@ public class BookController {
         return bookService.getBookById(id);
     }
     @PutMapping("/{id}")
-    public Book updateBook(@PathVariable long id, @RequestBody @Valid Book book){
-        return bookService.updateBook(id, book);
+    public Book updateBook(@PathVariable long id, @RequestBody @Valid BookDTO bookDTO){
+        return bookService.updateBook(id, bookDTO);
     }
     @DeleteMapping("/{id}")
     public void deleteBook(@PathVariable long id){
