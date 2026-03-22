@@ -26,7 +26,7 @@ public class BookService {
         if(title != null && !title.isEmpty()){
             bookPage = bookRepository.findByTitleContainingIgnoreCase(title, pageable);
         }else if(authorName != null && !authorName.isEmpty()){
-            bookPage = bookRepository.findByAuthorNameContainingIgnoreCase(authorName, pageable);
+            bookPage = bookRepository.findByAuthor_NameContainingIgnoreCase(authorName, pageable);
         }else{
             bookPage = bookRepository.findAll(pageable);
         }
@@ -62,7 +62,7 @@ public class BookService {
         return bookRepository.save(book);
     }
     public Book getBookById(long id){
-        return bookRepository.findById(id).orElse(null);
+        return bookRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
     }
     public Book updateBook(long id, BookDTO dto){
         Book existing = bookRepository.findById(id)
@@ -71,7 +71,9 @@ public class BookService {
         existing.setPrice(dto.getPrice());
         return bookRepository.save(existing);
     }
-
+    public List<Book> getBooksByAuthorId(long authorId) {
+        return bookRepository.findByAuthorId(authorId);
+    }
     public void deleteBook(long id){
         bookRepository.deleteById(id);
     }

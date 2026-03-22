@@ -29,14 +29,6 @@ public class AuthController {
         return ResponseEntity.ok("User registered successfully");
     }
     //login
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User user){
 
-        var existingUser = userRepository.findByUsername(user.getUsername());
-        if(existingUser.isPresent() && passwordEncoder.matches(user.getPassword(), existingUser.get().getPassword())) {
-            return ResponseEntity.ok("Login successfull");
-        }
-        return ResponseEntity.status(401).body("Invalid credentials");
-    }
 
 }

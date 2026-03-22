@@ -10,30 +10,30 @@ import java.util.List;
 public class BookController {
     private final BookService bookService;
 
+    public BookController(BookService bookService){
+        this.bookService = bookService;
+    }
+
+    @GetMapping("/search")
     public List<BookDTO> searchBooks(@RequestParam(required = false) String title, @RequestParam(required = false) String authorName,
                                      @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size){
 
         return bookService.searchBooks(title, authorName, page, size);
     }
-
-    public BookController(BookService bookService){
-        this.bookService = bookService;
-    }
     @GetMapping("/paged")
     public List<BookDTO> getBooksPaged(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size,
-                                       String sortBy, String sortDir){
+                                       @RequestParam(defaultValue = "title") String sortBy, @RequestParam(defaultValue = "asc") String sortDir){
         return bookService.getBooksPaged(page, size, sortBy, sortDir);
     }
     @PostMapping
     public Book addBook(@RequestBody @Valid BookDTO bookDTO){
          return bookService.addBook(bookDTO);
-//        Book book = new Book(bookDTO.getTitle(), bookDTO.getPrice());
-//        return bookService.addBook(book, bookDTO.getAuthorId());
     }
     @GetMapping("/{id}")
     public Book getBook(@PathVariable long id){
         return bookService.getBookById(id);
     }
+
     @PutMapping("/{id}")
     public Book updateBook(@PathVariable long id, @RequestBody @Valid BookDTO bookDTO){
         return bookService.updateBook(id, bookDTO);

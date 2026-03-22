@@ -10,11 +10,11 @@ import java.util.List;
 public class AuthorService {
 
     private final AuthorRepository authorRepository;
-    private final BookRepository bookRepostory;
+    private final BookRepository bookRepository;
 
     public AuthorService(AuthorRepository authorRepository, BookRepository bookRepostory) {
         this.authorRepository = authorRepository;
-        this.bookRepostory = bookRepostory;
+        this.bookRepository = bookRepostory;
     }
 
     public List<Author> getAllAuthors(){
@@ -24,11 +24,11 @@ public class AuthorService {
         return authorRepository.save(author);
     }
     public Author getAuthorById(long id){
-        return authorRepository.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Author ot found"));
+        return authorRepository.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Author not found"));
     }
     public Book addBookToAuthor(long authorId, Book book){
         Author author = getAuthorById(authorId);
         book.setAuthor(author);
-        return bookRepostory.save(book);
+        return bookRepository.save(book);
     }
 }
