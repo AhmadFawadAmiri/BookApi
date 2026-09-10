@@ -1,2 +1,2 @@
 # BookApi
-This is my githup repository using Java with Spring Boot to create a book api
+A REST API for managing books, developed with Java and Spring Boot.
